@@ -1,8 +1,8 @@
 /* MENU */
 .icon-navbar
 {
-    float: left;
-    margin-right: 10px;
+  float: left;
+  margin-right: 10px;
 }
 
 *,
@@ -140,7 +140,7 @@ body {
   height: 3px;
 }
 
-@media only screen and (max-width: 1150px) {
+@media only screen and (max-width: 1700px) {
   .container {
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
