@@ -1,3 +1,9 @@
+<?php
+    session_start();
+    $login = $_SESSION['login'];
+    $mdp = $_SESSION['mdp'];
+?>
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -34,25 +40,24 @@
                     <input type="radio" name="css-tabs" id="tab-1" checked class="tab-switch">
                     <label for="tab-1" class="tab-label">À propos</label>
                         <div class="tab-content">
-                        <div class="form-style-5">
-                            <form>
-                            <fieldset>
-                            <legend><span class="number">1</span> Détail du compte : </legend>
+                            <div class="form-style-5">
+                                <form>
+                                    <fieldset>
+                                        <legend><span class="number">1</span> Détail du compte : </legend>
 
-                            <label>Numéro d'identification :</label>
-                            <input type="text" name="field1" placeholder="Numéro d'identification de l'utilisateur" readonly>
+                                        <label>Numéro d'identification :</label>
+                                        <input type="text" name="field1" placeholder="" readonly>
 
-                            <label>Identifiant :</label>
-                            <input type="text" name="field1" placeholder="Identifiant de l'utilisateur" readonly>
+                                        <label>Identifiant :</label>
+                                        <input type="text" name="field1" placeholder="<?php echo "$login";?>" readonly>
 
-                            <label>Mot de passe :</label>
-                            <input type="email" name="field2" placeholder="Mot de passe de l'utilisateur" readonly>  
-                            
-                            <label>Privilège du compte :</label>
-                            <input type="email" name="field2" placeholder="Privilège de l'utilisateur" readonly>  
-                            </fieldset>
-
-                            </form>
+                                        <label>Mot de passe :</label>
+                                        <input type="email" name="field2" placeholder="****" readonly>  
+                                    
+                                        <label>Privilège du compte :</label>
+                                        <input type="email" name="field2" placeholder="" readonly>  
+                                    </fieldset>
+                                </form>
                             </div>     
                         </div>
                     </div>
@@ -62,31 +67,69 @@
                     <label for="tab-2" class="tab-label">Modification du compte</label>
                     <div class="tab-content">
                         <div class="form-style-5">
-                            <form>
-                            <fieldset>
-                            <legend><span class="number">1</span> Modification de l'identifiant : </legend>
+                            <form method="POST" action="parametres.php">
+                                <fieldset>
+                                    <legend><span class="number">1</span> Modification de l'identifiant : </legend>
 
-                            <label>Identifiant actuel :</label>
-                            <input type="text" name="field1" placeholder="Identifiant de l'utilisateur" readonly>
+                                    <label>Mot de passe actuel :</label>
+                                    <input type="text" name="mdpActuel" placeholder="Identifiant de l'utilisateur">
 
-                            <label>Nouveau identifiant :</label>
-                            <input type="text" name="field1" placeholder="Nouveau identifiant de l'utilisateur">
+                                    <label>Nouveau identifiant :</label>
+                                    <input type="text" name="nouveauLogin" placeholder="Nouveau identifiant de l'utilisateur">
 
-                            <legend><span class="number">2</span> Modification du mot de passe : </legend>
-
-                            <label>Nouveau mot de passe :</label>
-                            <input type="email" name="field2" placeholder="Nouveau mot de passe de l'utilisateur">  
-                            
-                            <label>Confirmation du mot de passe :</label>
-                            <input type="email" name="field2" placeholder="Confirmation du nouveau mot de passe de l'utilisateur">  
-                            </fieldset>
-                            <input type="submit" value="Confirmer" />
+                                    <input type="submit" name="modifierIdentifiant" value="Modifier l'identifiant"/>
                             </form>
+                                </fieldset>
+                                
+                                <fieldset>
+                            <form method="POST" action="parametres.php">
+                                    <legend><span class="number">2</span> Modification du mot de passe : </legend>
+
+                                    <label>Mot de passe actuel :</label>
+                                    <input type="text" name="mdpActuel2" placeholder="Mot de passe de l'utilisateur"> 
+                                    
+                                    <label>Nouveau mot de passe :</label>
+                                    <input type="text" name="nouveauMdp" placeholder="Nouveau mot de passe de l'utilisateur">  
+                                
+                                    <label>Confirmation du mot de passe :</label>
+                                    <input type="text" name="confirmationMdp" placeholder="Confirmation du nouveau mot de passe de l'utilisateur">  
+                                
+                                <input type="submit" name="modifierMdp" value="Modifier le mot de passe"/>
+                                </fieldset>
+                            </form>
+
+                            <?php
+                                if(isset($_POST['modifierMdp']) && $mdp == $_POST['mdpActuel2'] && $_POST['nouveauMdp'] == $_POST['confirmationMdp'])
+                                {
+                                    $nouveauMdp = $_POST['nouveauMdp']; 
+                                    ModificationMotDePasse($login,$mdp,$nouveauMdp);
+                                }
+                                else if(isset($_POST['modifierMdp']))
+                                {
+                                    ?>
+                                        <script type="text/javascript" language="javascript">
+                                            alert("La modification du mot de passe n'a pas pu etre effectué. Veuillez réessayer");
+                                        </script>    
+                                    <?php
+                                }
+                            ?>
+
                             </div>     
                         </div>
                     </div>
 
-                    <button class="w3-button w3-red">Déconnexion</button>
+                    <script>
+                        function deconnexion()
+                        {
+                            if (confirm("Vous desirez vraiment vous deconnecter ?"))
+                            {
+                                window.location="http://127.0.0.1/BABOU/"; 
+                                session_destroy();
+                            }
+                        }
+                    </script>
+
+                    <button class="w3-button w3-red" name="deconnexion" onclick="deconnexion()">Déconnexion</button>
                 </div>
         </div>
 

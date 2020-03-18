@@ -1,3 +1,9 @@
+<?php
+    session_start();
+    $login = $_SESSION['login'];
+    $mdp = $_SESSION['mdp'];
+?>
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -35,29 +41,48 @@
                     <label for="tab-1" class="tab-label">Ajouter un compte utilisateur</label>
                         <div class="tab-content">
                         <div class="form-style-5">
-                            <form>
-                            <fieldset>
-                                <legend><span class="number">1</span> Ajouter un compte utilisateur : </legend>
+                            <form method="POST" action="administrateur.php">
+                                <fieldset>
+                                    <legend><span class="number">1</span> Ajouter un compte utilisateur : </legend>
 
-                                <label>Identifiant :</label>
-                                <input type="text" name="field1" placeholder="Identifiant de l'utilisateur">
+                                    <label>Identifiant :</label>
+                                    <input type="text" name="identifiant" placeholder="Identifiant de l'utilisateur" required>
 
-                                <label>Mot de passe :</label>
-                                <input type="text" name="field1" placeholder="Mot de passe de l'utilisateur">
+                                    <label>Mot de passe :</label>
+                                    <input type="text" name="mdp" placeholder="Mot de passe de l'utilisateur" required>
 
-                                <label>Confirmation du mot de passe :</label>
-                                <input type="email" name="field2" placeholder="Confirmation du mot de passe de l'utilisateur">  
-                                
-                                <label>Privilège du compte :</label>
-                                <select id="job" name="field4">
-                                    <optgroup label="Privilège du compte">
-                                        <option value="0">Gestionnaire</option>
-                                        <option value="1">Administrateur</option>
-                                    </optgroup>
-                                </select>  
-                            </fieldset>
-                            <input type="submit" value="Ajouter" />
+                                    <label>Confirmation du mot de passe :</label>
+                                    <input type="text" name="confirmationMdp" placeholder="Confirmation du mot de passe de l'utilisateur" required>  
+                                    
+                                    <label>Privilège du compte :</label>
+                                    <select id="job" name="privilege">
+                                        <optgroup label="Privilège du compte">
+                                            <option value="0">Gestionnaire</option>
+                                            <option value="1">Administrateur</option>
+                                        </optgroup>
+                                    </select>  
+                                </fieldset>
+                                <input type="submit" name="ajouter" value="Ajouter"/>
                             </form>
+
+                            <?php
+                                if(isset($_POST['ajouter']) && $_POST['mdp'] == $_POST['confirmationMdp'])
+                                {
+                                    $login = $_POST['identifiant'];
+                                    $mdp = $_POST['identifiant'];
+                                    $privilege = $_POST['privilege'];
+                                    AjouterUtilisateur($login,$mdp,$privilege);
+                                }
+                                else if(isset($_POST['modifierIdentifiant']))
+                                {
+                                    ?>
+                                        <script type="text/javascript" language="javascript">
+                                            alert("L'ajout d'un nouveau compte utilisateur n'a pas pu etre effectuer. Veuillez réessayer");
+                                        </script>    
+                                    <?php
+                                }
+                            ?>
+
                             </div>     
                         </div>
                     </div>
@@ -67,28 +92,75 @@
                     <label for="tab-2" class="tab-label">Modifier un compte utilisateur</label>
                     <div class="tab-content">
                         <div class="form-style-5">
-                            <form>
-                            <fieldset>
-                            <legend><span class="number">1</span> Sélectionner un compte utilisateur : </legend>
+                            <form method="POST" action="administrateur.php">
+                                <fieldset>
+                                    <legend><span class="number">1</span> Sélectionner un compte utilisateur : </legend>
 
-                            <label>Identifiant du compte utilisateur a modifier :</label>
-                            <input type="text" name="field1" placeholder="Identifiant de l'utilisateur a modifier">
+                                    <label>Identifiant du compte utilisateur a modifier :</label>
+                                    <input type="text" name="selectIdentifiant" placeholder="Identifiant de l'utilisateur a modifier" required>
+                                </fieldset>
+                                <fieldset>
+                                    <legend><span class="number">2</span> Modification de l'identifiant : </legend>
 
+                                    <label>Nouveau identifiant :</label>
+                                    <input type="text" name="nouveauIdentifiant" placeholder="Nouveau identifiant de l'utilisateur">
 
-                            <legend><span class="number">2</span> Modification de l'identifiant : </legend>
+                                    <input type="submit" name="modifierIdentifiant" value="Modifier l'identifiant" />
+                                </fieldset>
 
-                            <label>Nouveau identifiant :</label>
-                            <input type="text" name="field1" placeholder="Nouveau identifiant de l'utilisateur">
+                                <?php
+                                    if(isset($_POST['modifierIdentifiant']) && isset($_POST['nouveauIdentifiant']))
+                                    {
+                                        $selectLogin = $_POST['selectIdentifiant'];
+                                        $nouveauLogin = $_POST['nouveauIdentifiant'];
+                                        ModifierIdentifiantUtilisateur($selectLogin,$nouveauLogin);
+                                    }
+                                ?>
 
-                            <legend><span class="number">3</span> Modification du mot de passe : </legend>
+                                <div class="separationAdmin"><hr></div>
+                                <fieldset>
+                                    <legend><span class="number">3</span> Modification du mot de passe : </legend>
 
-                            <label>Nouveau mot de passe :</label>
-                            <input type="email" name="field2" placeholder="Nouveau mot de passe de l'utilisateur">  
-                            
-                            <label>Confirmation du nouveau mot de passe :</label>
-                            <input type="email" name="field2" placeholder="Confirmation du nouveau mot de passe de l'utilisateur">  
-                            </fieldset>
-                            <input type="submit" value="Modifier" />
+                                    <label>Nouveau mot de passe :</label>
+                                    <input type="text" name="nouveauMdp" placeholder="Nouveau mot de passe de l'utilisateur">  
+                                
+                                    <label>Confirmation du nouveau mot de passe :</label>
+                                    <input type="text" name="confirmationMdp" placeholder="Confirmation du nouveau mot de passe de l'utilisateur">  
+                                
+                                    <input type="submit" name="modifierMdp" value="Modifier le mot de passe" />
+                                </fieldset>
+
+                                <?php
+                                    if(isset($_POST['modifierMdp']) && $_POST['nouveauMdp'] == $_POST['confirmationMdp'])
+                                    {
+                                        $selectLogin = $_POST['selectIdentifiant'];
+                                        $nouveauMdp = $_POST['nouveauMdp'];
+                                        ModifierMdpUtilisateur($selectLogin,$nouveauMdp);
+                                    }
+                                ?>
+
+                                <div class="separationAdmin"><hr></div>
+                                <fieldset>
+                                    <legend><span class="number">4</span> Modification du privilège : </legend>
+                                    <label>Privilège du compte :</label>
+                                    <select id="job" name="privilege">
+                                        <optgroup label="Privilège du compte">
+                                            <option value="0">Gestionnaire</option>
+                                            <option value="1">Administrateur</option>
+                                        </optgroup>
+                                    </select> 
+                                    <input type="submit" name="modifierPrivilege" value="Modifier le privilège" />
+                                </fieldset>
+
+                                <?php
+                                    if(isset($_POST['modifierPrivilege']))
+                                    {
+                                        $selectLogin = $_POST['selectIdentifiant'];
+                                        $privilege = $_POST['privilege'];
+                                        ModifierPrivilegeUtilisateur($selectLogin,$privilege);
+                                    }
+                                ?>
+
                             </form>
                             </div>     
                         </div>
@@ -103,7 +175,7 @@
                                 <fieldset>
                                 <legend><span class="number">1</span> Sélectionner un compte utilisateur : </legend>
 
-                                <label>Identifiant du compte utilisateur a modifier :</label>
+                                <label>Identifiant du compte utilisateur a supprimer :</label>
                                 <input type="text" name="field1" placeholder="Identifiant de l'utilisateur a supprimer">
 
                                 </fieldset>

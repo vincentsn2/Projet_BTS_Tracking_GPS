@@ -1,4 +1,8 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<?php
+    session_start();
+?>
+
+<html>
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="styleMenu.css">

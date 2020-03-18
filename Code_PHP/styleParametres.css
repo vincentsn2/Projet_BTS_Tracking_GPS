@@ -3,6 +3,20 @@
     box-sizing: border-box;
   }
 
+  hr {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+    }
+
+  .separationAdmin
+  {
+    padding-top: 0%;
+    padding-bottom: 1%;
+    padding-left: 7%;
+    padding-right: 7%;
+  }
+
   body {
     font-family: sans-serif;
     color: #ecf0f1;
@@ -10,7 +24,7 @@
   }
 
   .wrapper {
-    max-width: 55%;
+    max-width: 60%;
     width: 100%;
     margin: 0 auto;
   }
@@ -19,7 +33,7 @@
     position: relative;
     margin: 5% 0;
     background: #1abc9c;
-    height: 80%;
+    height: 134%;
   }
 
   .tabs::before,
@@ -60,7 +74,7 @@
   }
 
   .tab-content {
-    height: 95%;
+    height: 96.9%;
     position: absolute;
     z-index: 1;
     top: 2.75em;
@@ -96,7 +110,7 @@
 	background: #f4f7f8;
 	background: #f4f7f8;
 	border-radius: 8px;
-    font-family: sans-serif;
+  font-family: sans-serif;
     padding: 2%;
 }
 .form-style-5 fieldset{
