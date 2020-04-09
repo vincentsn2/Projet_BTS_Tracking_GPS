@@ -3,7 +3,8 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" href="styleFormulaire.css">
         <?php 
-            include 'fonction.php'; 
+            include 'fonction.php';
+            include 'BDD.php'; 
         ?>
     <head>
 
@@ -38,8 +39,9 @@
                         $login=$_POST['loginConnexion'];
                         $mdp=$_POST['motDePasseConnexion'];
                         
-                        Connexion($login,$mdp);
-                    }
+                      $conn = new BDD();
+                      $conn -> ConnexionBDD($login,$mdp);
+                    } 
 		        ?>
 
                 <div class="footer">
@@ -93,7 +95,9 @@
                     $mdp1=$_POST['motDePasseInscription2'];
                     $typeCompte=$_POST['compte'];
                         
-                    Inscription($login,$mdp,$typeCompte);
+                   $insc = new BDD();
+                   $insc -> InscriptionBDD($login,$mdp,$typeCompte);
+                    
                 }
                 else
                 {
@@ -101,7 +105,7 @@
                     echo "alert('Veuillez recommencer l'inscription en suivant les instructions.')";  
                     echo "</script>"; 
                 }
-		    ?>
+            ?>
         </div>
     </body>
 </html>

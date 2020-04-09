@@ -80,213 +80,59 @@
 <?php
     }
 
-    Function Connexion($login,$mdp)
-    {
-        try
-        {
-            $db = new PDO('mysql:host=localhost;dbname=gps;charset=utf8','root','');
-        }
-        catch(Exception $e)
-        {
-            die('Erreur : '.$e->getMessage());
-        }
+    //Function Connexion($login,$mdp)
+    //{
+       // try
+        //{
+       //     $db = new PDO('mysql:host=localhost;dbname=trackinggps;charset=utf8','root','');
+       // }
+      //  catch(Exception $e)
+       // {
+      //      die('Erreur : '.$e->getMessage());
+       // }
             
-        if (isset($login) AND isset($mdp))
-        {
+      // if (isset($login) AND isset($mdp))
+      //  {
     
-            $verif = $db->prepare('SELECT COUNT(*) FROM utilisateur WHERE mdp = :password AND login = :pseudo'); // Je compte le nombre d'entrée ayant pour mot de passe et login ceux rentrés
-            $verif->bindValue(':password', $mdp, PDO::PARAM_STR);
-            $verif->bindValue(':pseudo', $login, PDO::PARAM_STR);
-            $verif->execute();
-            $donnees = $verif->fetchColumn();
-            $verif->closeCursor();
+        //    $verif = $db->prepare('SELECT COUNT(*) FROM utilisateur WHERE mdp = :password AND login = :pseudo'); // Je compte le nombre d'entrée ayant pour mot de passe et login ceux rentrés
+         //   $verif->bindValue(':password', $mdp, PDO::PARAM_STR);
+        //    $verif->bindValue(':pseudo', $login, PDO::PARAM_STR);
+        //    $verif->execute();
+        //    $donnees = $verif->fetchColumn();
+         //   $verif->closeCursor();
                 
-            if($donnees == 1) // On a trouvé un membre avec ce couple mdp, login 
-            { 
-                session_start();
-                $_SESSION['login'] = $login;
-                $_SESSION['mdp'] = $mdp;
-                header('Location:accueil.php');        
-            }
-            else 
-            { // Personne n'existe dans la table avec ce couple mdp, login
-                echo "<script type='text/javascript'>";
-                echo "alert('Login ou mot de passe invalide, veuillez ressayer.')";  
-                echo "</script>";  
-            }
-        }
-    }
+         //   if($donnees == 1) // On a trouvé un membre avec ce couple mdp, login 
+         //   { 
+         //       session_start();
+         //       $_SESSION['login'] = $login;
+         //       $_SESSION['mdp'] = $mdp;
+         //       header('Location:accueil.php');        
+         //   }
+         //   else 
+         //   { // Personne n'existe dans la table avec ce couple mdp, login
+        //        echo "<script type='text/javascript'>";
+         //       echo "alert('Login ou mot de passe invalide, veuillez ressayer.')";  
+         //       echo "</script>";  
+           // }
+      //  }
+    //}
 
-    Function Inscription($login, $mdp, $typeCompte)
-    {
+   // Function Inscription($login, $mdp, $typeCompte)
+    //{
         
-        try
-        {
-            $db = new PDO('mysql:host=localhost;dbname=gps;charset=utf8','root','');
-        }
-        catch(Exception $e)
-        {
-            die('Erreur : '.$e->getMessage());
-        }   
+       // try
+       // {
+      //      $db = new PDO('mysql:host=localhost;dbname=stationmeteo;charset=utf8','root','');
+       // }
+      //  catch(Exception $e)
+       // {
+      //      die('Erreur : '.$e->getMessage());
+        //}   
 
-        if(isset($login) AND isset($mdp) AND isset($typeCompte))
-        {
-            $new = $db->query("INSERT INTO utilisateur (login, mdp, admin) VALUES ('$login','$mdp','$typeCompte')");
-            header('Location:index.php');
-        }
-    }
-
-    Function AProposIdentification($login,$mdp)
-    {
-        try
-        {
-            $db = new PDO('mysql:host=localhost;dbname=gps;charset=utf8','root','');
-        }
-        catch(Exception $e)
-        {
-            die('Erreur : '.$e->getMessage());
-        }   
-
-        $new = $db->query("SELECT idUser FROM utilisateur WHERE login='$login' AND mdp='$mdp'");
-    }
-
-    Function AProposPrivilege($login,$mdp)
-    {
-        try
-        {
-            $db = new PDO('mysql:host=localhost;dbname=gps;charset=utf8','root','');
-        }
-        catch(Exception $e)
-        {
-            die('Erreur : '.$e->getMessage());
-        }   
-
-        $new = $db->query("SELECT admin FROM utilisateur WHERE login='$login' AND mdp='$mdp'");
-    }
-
-    Function ModificationIdentifiant($login,$mdp,$nouveaulogin)
-    {
-        try
-        {
-            $db = new PDO('mysql:host=localhost;dbname=gps;charset=utf8','root','');
-        }
-        catch(Exception $e)
-        {
-            die('Erreur : '.$e->getMessage());
-        }   
-
-        $modif = $db->query("UPDATE utilisateur SET login='$nouveaulogin' WHERE login='$login' AND mdp='$mdp'");
-        
-
-        ?>
-            <script type="text/javascript" language="javascript">
-                alert("Votre identifiant a été modifié avec succès");
-                window.location="http://127.0.0.1/BABOU/";
-                session_destroy();
-            </script>
-        <?php
-    }
-
-    Function ModificationMotDePasse($login,$mdp,$nouveauMdp)
-    {
-        try
-        {
-            $db = new PDO('mysql:host=localhost;dbname=gps;charset=utf8','root','');
-        }
-        catch(Exception $e)
-        {
-            die('Erreur : '.$e->getMessage());
-        }   
-
-        $modif = $db->query("UPDATE utilisateur SET mdp='$nouveauMdp' WHERE login='$login' AND mdp='$mdp'");
-        
-
-        ?>
-            <script type="text/javascript" language="javascript">
-                alert("Votre mot de passe a été modifié avec succès");
-                window.location="http://127.0.0.1/BABOU/";
-                session_destroy();
-            </script>
-        <?php
-    }
-
-    Function AjouterUtilisateur($login,$mdp,$privilege)
-    {
-        try
-        {
-            $db = new PDO('mysql:host=localhost;dbname=gps;charset=utf8','root','');
-        }
-        catch(Exception $e)
-        {
-            die('Erreur : '.$e->getMessage());
-        } 
-        
-        $modif = $db->query("INSERT INTO utilisateur VALUES ('$login', '$mdp', '$privilege')");   
-        
-        ?>
-            <script type="text/javascript" language="javascript">
-                alert("Le compte utilisateur a été ajouté avec succès");
-            </script>
-        <?php
-    }
-
-    Function ModifierIdentifiantUtilisateur($selectLogin,$nouveauLogin)
-    {
-        try
-        {
-            $db = new PDO('mysql:host=localhost;dbname=gps;charset=utf8','root','');
-        }
-        catch(Exception $e)
-        {
-            die('Erreur : '.$e->getMessage());
-        } 
-        
-        $modif = $db->query("UPDATE utilisateur SET login='$nouveauLogin' WHERE login='$selectLogin'");   
-        
-        ?>
-            <script type="text/javascript" language="javascript">
-                alert("L'identifiant du compte utilisateur a été modifié avec succès");
-            </script>
-        <?php
-    }
-
-    Function ModifierMdpUtilisateur($selectLogin,$nouveauMdp)
-    {
-        try
-        {
-            $db = new PDO('mysql:host=localhost;dbname=gps;charset=utf8','root','');
-        }
-        catch(Exception $e)
-        {
-            die('Erreur : '.$e->getMessage());
-        } 
-        
-        $modif = $db->query("UPDATE utilisateur SET mdp='$nouveauMdp' WHERE login='$selectLogin'");   
-        
-        ?>
-            <script type="text/javascript" language="javascript">
-                alert("Le mot de passe du compte utilisateur a été modifié avec succès");
-            </script>
-        <?php
-    }
-
-    Function ModifierPrivilegeUtilisateur($selectLogin,$privilege)
-    {
-        try
-        {
-            $db = new PDO('mysql:host=localhost;dbname=gps;charset=utf8','root','');
-        }
-        catch(Exception $e)
-        {
-            die('Erreur : '.$e->getMessage());
-        } 
-        
-        $modif = $db->query("UPDATE utilisateur SET admin='$privilege' WHERE login='$selectLogin'");   
-        
-        ?>
-            <script type="text/javascript" language="javascript">
-                alert("Le privilège du compte utilisateur a été modifié avec succès");
-            </script>
-        <?php
-    }
+      //  if(isset($login) AND isset($mdp) AND isset($typeCompte))
+       // {
+       //     $new = $db->query("INSERT INTO utilisateur (login, mdp, admin) VALUES ('$login','$mdp','$typeCompte')");
+      //      header('Location:index.php');
+     //   }
+  //  }
 ?>
